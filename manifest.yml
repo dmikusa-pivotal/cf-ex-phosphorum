@@ -1,0 +1,11 @@
+---
+applications:
+- name: phalcon-forum
+  memory: 128M
+  instances: 1
+  host: phalcon-forum
+  path: .
+  buildpack: https://github.com/dmikusa-pivotal/cf-php-build-pack.git
+  services:
+  - mysql-db
+  - sendgrid
