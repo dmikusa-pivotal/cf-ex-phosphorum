@@ -20,7 +20,7 @@ use Phalcon\Mvc\View\Engine\Volt;
 use Phalcon\Mvc\View;
 use Phalcon\Db\Adapter\Pdo\Mysql as DatabaseConnection;
 use Phalcon\Events\Manager as EventsManager;
-use Phalcon\Logger\Adapter\File as FileLogger;
+use Phalcon\Logger\Adapter\Stream as StreamLogger;
 use Phalcon\Mvc\Model\Metadata\Files as MetaDataAdapter;
 use Phalcon\Mvc\Model\Metadata\Memory as MemoryMetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
@@ -106,7 +106,7 @@ $di->set(
 
             $eventsManager = new EventsManager();
 
-            $logger = new FileLogger(APP_PATH . "/app/logs/db.log");
+            $logger = new StreamLogger("php://stderr");
 
             //Listen all the database events
             $eventsManager->attach(
