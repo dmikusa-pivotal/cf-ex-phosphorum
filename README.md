@@ -3,11 +3,23 @@ Phosphorum 2
 
 [![Build Status](https://secure.travis-ci.org/phalcon/forum.svg?branch=master)](http://travis-ci.org/phalcon/forum)
 
-This is the official Phalcon Forum you can adapt it to your own needs or improve it if you want.
+This is the official Phalcon Forum you can adapt it to your own needs or improve it if you want.  This fork of the repository has been modified to run on CloudFoundry.
 
-Please write us if you have any feedback.
 
-Thanks.
+CloudFoundry
+------------
+
+List of changes to make this run on CloudFoundry.
+
+  - Remote `.htaccess` files.  These are not necessary on CF.
+  - Added `manifest.yml` file.  This is not strictly necessary, but helps making pushes easier.
+  - Modified `app/config/services.php` and changed FileLogger to StreamLogger so that logs are written to stderr.  This ensures that the logs are streamed properly to `cf logs`.
+  - Added some `ignore.txt` files under the `cache` directory.  This was necessary so that `cf push` would upload the empty directories (unfortunately using a hidden file did not seem to help).
+  - Added `.cfignore` to instruct `cf push` what to skip on upload.  Skips things like tests and docs.  Not strictly necessary, but makes the upload go quicker.
+  - Added `.bp-config/options.json` to enable phalcon, openssl and curl extensions.
+  - Added `.bp-config/httpd/extra/httpd-php.conf` custom rewrite rules to modify how HTTPD interacts with PHP-FPM.  This is essentially what was in the `.htaccess` file with some modifications to work with a FastCGI setup.
+  - Added `.bp-config/httpd/extra/httpd-mime.conf` to set the `DirectoryIndex` and `AddDefaultCharset` options.  Could have put these elsewhere, but adding them here was convenient.
+
 
 Requirements
 ------------
@@ -16,9 +28,6 @@ You can clone the repository and then install dependencies using composer:
 ```bash
 php composer.phar install
 ```
-
-Requirements
-------------
 This application uses Github as authentication system, you need a client id and secret id
 to be set up in the configuration (app/config/config.php):
 
