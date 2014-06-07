@@ -15,14 +15,19 @@
   +------------------------------------------------------------------------+
 */
 
+$services = json_decode($_ENV['VCAP_SERVICES'], true);
+$mysql_svc = $services['cleardb'][0]['credentials'];
+$smtp_svc = $services['sendgrid'][0]['credentials'];
+
 return new \Phalcon\Config(array(
 
     'database'    => array(
         'adapter'  => 'Mysql',
-        'host'     => 'localhost',
-        'username' => 'root',
-        'password' => '',
-        'dbname'   => 'forum',
+        'host'     => $mysql_svc['hostname'],
+        'port'     => $mysql_svc['port'],
+        'username' => $mysql_svc['username'],
+        'password' => $mysql_svc['password'],
+        'dbname'   => $mysql_svc['name'],
         'charset'  => 'utf8'
     ),
     'application' => array(
@@ -53,11 +58,11 @@ return new \Phalcon\Config(array(
         'secret' => ''
     ),
     'smtp'        => array(
-        'host'     => "",
+        'host'     => $smtp_svc['hostname'],
         'port'     => 25,
         'security' => "tls",
-        'username' => "",
-        'password' => ""
+        'username' => $smtp_svc['username'],
+        'password' => $smtp_svc['password']
     ),
     'beanstalk'   => array(
         'host' => '127.0.0.1'
