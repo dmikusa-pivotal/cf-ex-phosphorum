@@ -1,7 +1,12 @@
-composer.
-codecept
+composer.phar
+codecept.phar
+codeception.yml
 README.md
 schemas
 tests
 scripts
 docs
+vendor
+.travis.yml
+CONTRIBUTING.md
+index.html
