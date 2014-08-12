@@ -27,6 +27,7 @@ use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Cache\Backend\File as FileCache;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Queue\Beanstalk;
+use Phosphorum\Notifications\Checker as NotificationsChecker;
 use Ciconia\Ciconia;
 
 /**
@@ -64,6 +65,10 @@ $di->set(
                 "compileAlways"     => $config->application->debug
             )
         );
+
+        $volt->getCompiler()->addFunction('number_format', function($resolvedArgs) {
+            return 'number_format(' . $resolvedArgs . ')';
+        });
 
         return $volt;
     },
@@ -134,6 +139,11 @@ $di->set(
 $di->set(
     'queue',
     function () use ($config) {
+
+        if (!isset($config->beanstalk->host)) {
+            throw new \Exception('Beanstalk is not configured');
+        }
+
         return new Beanstalk(array(
             'host' => $config->beanstalk->host
         ));
@@ -223,7 +233,8 @@ $di->set(
         $dispatcher = new MvcDispatcher();
         $dispatcher->setDefaultNamespace('Phosphorum\Controllers');
         return $dispatcher;
-    }
+    },
+    true
 );
 
 /**
@@ -276,6 +287,9 @@ $di->set(
     }
 );
 
+/**
+ * Markdown renderer
+ */
 $di->set(
     'markdown',
     function () {
@@ -286,6 +300,17 @@ $di->set(
         $ciconia->addExtension(new \Ciconia\Extension\Gfm\FencedCodeBlockExtension());
         $ciconia->addExtension(new \Ciconia\Extension\Gfm\UrlAutoLinkExtension());
         return $ciconia;
+    },
+    true
+);
+
+/**
+ * Real-Time notifications checker
+ */
+$di->set(
+    'notifications',
+    function () {
+        return new NotificationsChecker();
     },
     true
 );

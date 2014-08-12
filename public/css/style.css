@@ -41,6 +41,10 @@ h1 {
     padding-top: 5px;
 }
 
+.discussion div.row:last-child {
+    border-bottom: none;
+}
+
 p {
     margin: 10px 0 15px;
 }
@@ -165,21 +169,31 @@ pre.prettyprint {
     color: #999;
 }
 
-
 .bs-callout {
     margin: 20px 0;
     padding: 20px;
+    border: 1px solid #eee;
     border-left: 3px solid #eee;
+    background: #fefefe;
+    margin-left: 10px;
 }
 
 .bs-callout-info {
-    background-color: #f4f8fa;
-    border-color: #5bc0de;
+    /*background-color: #f4f8fa;*/
+    border-left-color: #5bc0de;
+}
+
+.bs-callout-success {
+    /*background-color: #dff0d8;*/
+    border-left-color: #47a447;
+}
+
+.bs-callout-warning {
+    border-left-color: #f0ad4e;
 }
 
 .bs-callout-danger {
-    background-color: #fdf7f7;
-    border-color: #d9534f;
+    border-left-color: #d9534f;
 }
 
 .bs-callout-danger h4 {
@@ -188,6 +202,14 @@ pre.prettyprint {
 
 .bs-callout-info h4 {
     color: #5bc0de;
+}
+
+.bs-callout-success h4 {
+    color: #47a447;
+}
+
+.bs-callout-warning h4 {
+    color: #f0ad4e;
 }
 
 .bs-callout h4 {
@@ -375,3 +397,45 @@ blockquote p {
 table.list-discussions a:visited {
     color: #8c8c8c;
 }
+
+.notification-container {
+    position: relative;
+}
+
+.notification-counter {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    background-color: rgba(212, 19, 13, 1);
+    color: #fff;
+    border-radius: 3px;
+    padding: 1px 3px;
+    font: 8px Verdana;
+}
+
+.activity-container table {
+    margin-top: 10px;
+}
+
+.activity-container span.date {
+    font-size: 12px;
+    color: #717171;
+}
+
+.activity-container .small {
+    width: 48px;
+}
+
+.activity-container .unread {
+    font-weight: bold;
+}
+
+pre,
+.breadcrumb {
+    background: #fefefe;
+}
+
+.breadcrumb {
+    margin-left: -15px;
+}
+

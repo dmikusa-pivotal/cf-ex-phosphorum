@@ -7,9 +7,23 @@
 {%- if (post.votes_up - post.votes_down) <= -3 -%}
 	<div class="bs-callout bs-callout-danger">
 		<h4>Too many negative votes</h4>
-		<p>This post has too many negative votes. The cause of this may be irrelevant information, inconsistent data,
-		 spam or aggressive vocabulary or tone, etc.</p>
+		<p>This post has too many negative votes. The cause of this could be:
+			<ul>
+				<li>Irrelevant or controversial information</li>
+				<li>confusing question or not a real question</li>
+				<li>Aggressive vocabulary, excesive rudeness, etc.</li>
+			</ul>
+		</p>
 	</div>
+{% else %}
+	{%- if post.accepted_answer == 'Y' -%}
+		<div class="bs-callout bs-callout-success">
+			<h4>Solved thread</h4>
+			<p>This post is marked as solved. If you think the information contained on this thread must be part of the
+				official documentation, please contribute submitting a <a href="https://help.github.com/articles/creating-a-pull-request">pull request</a> to its <a href="https://github.com/phalcon/docs">repository</a>.
+			</p>
+		</div>
+	{%- endif -%}
 {%- endif -%}
 
 {%- if post.canHaveBounty() -%}
@@ -66,6 +80,12 @@
 			</div>
 		</div>
 	</p>
+
+	{%- if moderator == 'Y' -%}
+		<ul class="nav navbar-nav navbar-right">
+
+		</ul>
+	{%- endif -%}
 
 	<div class="discussion">
 		<div class="row">
@@ -323,4 +343,4 @@
 		</form>
 	</div>
 </div>
-{% endif %}
+{%- endif -%}

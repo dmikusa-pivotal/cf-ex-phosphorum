@@ -97,14 +97,25 @@ class Users extends Model
         $this->votes_points -= $karma;
     }
 
+    public function beforeSave()
+    {
+        if (!trim($this->name)) {
+            if ($this->login) {
+                $this->name = $this->login;
+            } else {
+                $this->name = 'No Name';
+            }
+        }
+    }
+
     public function beforeCreate()
     {
         $this->notifications = 'P';
         $this->moderator     = 'N';
-        $this->karma += 45;
-        $this->votes_points += 45;
-        $this->votes    = 0;
-        $this->timezone = 'Europe/London';
+        $this->karma        += Karma::INITIAL_KARMA;
+        $this->votes_points += Karma::INITIAL_KARMA;
+        $this->votes         = 0;
+        $this->timezone      = 'Europe/London';
     }
 
     public function afterValidation()

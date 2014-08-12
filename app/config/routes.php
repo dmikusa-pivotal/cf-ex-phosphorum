@@ -26,6 +26,22 @@ $router->add(
 );
 
 $router->add(
+    '/help/stats',
+    array(
+       'controller' => 'help',
+       'action'     => 'stats'
+    )
+);
+
+$router->add(
+    '/help/about',
+    array(
+       'controller' => 'help',
+       'action'     => 'about'
+    )
+);
+
+$router->add(
     '/help/moderators',
     array(
        'controller' => 'help',
@@ -54,6 +70,14 @@ $router->add(
     array(
        'controller' => 'help',
        'action'     => 'karma'
+    )
+);
+
+$router->add(
+    '/help/create-post',
+    array(
+       'controller' => 'help',
+       'action'     => 'create'
     )
 );
 
@@ -153,7 +177,6 @@ $router->add(
     )
 );
 
-
 $router->add(
     '/reply/history/{id:[0-9]+}',
     array(
@@ -203,10 +226,26 @@ $router->add(
 );
 
 $router->add(
+    '/login/oauth/access_token',
+    array(
+       'controller' => 'session',
+       'action'     => 'accessToken'
+    )
+);
+
+$router->add(
     '/logout',
     array(
        'controller' => 'session',
        'action'     => 'logout'
+    )
+);
+
+$router->add(
+    '/notifications',
+    array(
+       'controller' => 'discussions',
+       'action'     => 'notifications'
     )
 );
 

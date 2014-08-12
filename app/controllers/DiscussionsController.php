@@ -25,6 +25,7 @@ use Phosphorum\Models\PostsHistory;
 use Phosphorum\Models\PostsVotes;
 use Phosphorum\Models\Categories;
 use Phosphorum\Models\Activities;
+use Phosphorum\Models\ActivityNotifications;
 use Phosphorum\Models\IrcLog;
 use Phosphorum\Models\Users;
 use Phosphorum\Models\Karma;
@@ -104,7 +105,6 @@ class DiscussionsController extends Controller
         /**
          * Create the conditions according to the parameter order
          */
-
         $userId = $this->session->get('identity');
 
         $params = null;
@@ -219,7 +219,6 @@ class DiscussionsController extends Controller
             return $this->response->redirect();
         }
 
-
         $this->tag->setTitle('Start a Discussion');
 
         if ($this->request->isPost()) {
@@ -245,8 +244,13 @@ class DiscussionsController extends Controller
             foreach ($post->getMessages() as $message) {
                 $this->flash->error($message);
             }
-        }
 
+            $this->view->firstTime = false;
+
+        } else {
+
+            $this->view->firstTime = Posts::countByUsersId($usersId) == 0;
+        }
 
         $parameters = array(
             'order' => 'name'
@@ -481,6 +485,7 @@ class DiscussionsController extends Controller
              * Generate cannonical meta
              */
             $this->view->canonical = 'discussion/' . $post->id . '/' . $post->slug;
+            $this->view->author    = $post->user;
 
         } else {
 
@@ -693,6 +698,16 @@ class DiscussionsController extends Controller
                     return $response->setJsonContent($contentErrorSave);
                 }
             }
+        }
+
+        if ($post->users_id != $user->id) {
+            $activity                       = new ActivityNotifications();
+            $activity->users_id             = $post->users_id;
+            $activity->posts_id             = $post->id;
+            $activity->posts_replies_id     = null;
+            $activity->users_origin_id      = $user->id;
+            $activity->type                 = 'P';
+            $activity->save();
         }
 
         $contentOk = array(
@@ -969,6 +984,35 @@ class DiscussionsController extends Controller
             'bind' => array($user->id)
         );
         $this->view->numberReplies = PostsReplies::count($parametersNumberReplies);
+    }
+
+    /**
+     * Shows the latest notifications for the current user
+     */
+    public function notificationsAction($offset = 0)
+    {
+        $usersId = $this->session->get('identity');
+        if (!$usersId) {
+            $this->flashSession->error('You must be logged first');
+            return $this->response->redirect();
+        }
+
+        $user = Users::findFirstById($usersId);
+        if (!$user) {
+            $this->flashSession->error('The user does not exist');
+            return $this->response->redirect();
+        }
+
+        $this->view->user = $user;
+
+        $this->view->notifications = ActivityNotifications::find(array(
+            'users_id = ?0',
+            'bind'  => array($usersId),
+            'limit' => 100,
+            'order' => 'created_at DESC'
+        ));
+
+        $this->tag->setTitle('Notifications');
     }
 
     /**

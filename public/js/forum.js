@@ -128,14 +128,18 @@ var Forum = {
 	editComment: function(event)
 	{
 		var element = $(event.data.element);
-		var content = $('div.post-content', element.parents()[2]);
-		$('div.posts-buttons', element.parents()[2]).hide();
-		if (content.is(':visible')) {
-			$.ajax({
-				dataType: 'json',
-				url: Forum._uri + 'reply/' + element.data('id'),
-				context: content
-			}).done(Forum.makeCommentEditable);
+		if (element) {
+			var content = $('div.post-content', element.parents()[2]);
+			$('div.posts-buttons', element.parents()[2]).hide();
+			if (content.is(':visible')) {
+				$.ajax({
+					dataType: 'json',
+					url: Forum._uri + 'reply/' + element.data('id'),
+					context: content
+				}).done(Forum.makeCommentEditable);
+			}
+		} else {
+			alert('Cannot trigger event');
 		}
 	},
 
@@ -145,11 +149,15 @@ var Forum = {
 	replyReply: function(event)
 	{
 		var element = $(event.data.element);
-		$('#reply-id').val(element.data('id'))
-		$.ajax({
-			dataType: 'json',
-			url: Forum._uri + 'reply/' + element.data('id')
-		}).done(Forum.addBaseComment);
+		if (element) {
+			$('#reply-id').val(element.data('id'))
+			$.ajax({
+				dataType: 'json',
+				url: Forum._uri + 'reply/' + element.data('id')
+			}).done(Forum.addBaseComment);
+		} else {
+			alert('Cannot trigger event');
+		}
 	},
 
 	/**
@@ -158,17 +166,21 @@ var Forum = {
 	votePostUp: function(event)
 	{
 		var element = $(event.data.element);
-		$.ajax({
-			dataType: 'json',
-			url: Forum._uri + 'discussion/vote-up/' + element.data('id')
-		}).done(function(response){
-			if (response.status == "error") {
-				$('#errorModal .modal-body').html(response.message);
-				$('#errorModal').modal('show');
-			} else {
-				window.location.reload(true);
-			}
-		});
+		if (element) {
+			$.ajax({
+				dataType: 'json',
+				url: Forum._uri + 'discussion/vote-up/' + element.data('id')
+			}).done(function(response){
+				if (response.status == "error") {
+					$('#errorModal .modal-body').html(response.message);
+					$('#errorModal').modal('show');
+				} else {
+					window.location.reload(true);
+				}
+			});
+		} else {
+			alert('Cannot trigger event');
+		}
 	},
 
 	/**
@@ -177,17 +189,21 @@ var Forum = {
 	votePostDown: function(event)
 	{
 		var element = $(event.data.element);
-		$.ajax({
-			dataType: 'json',
-			url: Forum._uri + 'discussion/vote-down/' + element.data('id')
-		}).done(function(response){
-			if (response.status == "error") {
-				$('#errorModal .modal-body').html(response.message);
-				$('#errorModal').modal('show');
-			} else {
-				window.location.reload(true);
-			}
-		});
+		if (element) {
+			$.ajax({
+				dataType: 'json',
+				url: Forum._uri + 'discussion/vote-down/' + element.data('id')
+			}).done(function(response){
+				if (response.status == "error") {
+					$('#errorModal .modal-body').html(response.message);
+					$('#errorModal').modal('show');
+				} else {
+					window.location.reload(true);
+				}
+			});
+		} else {
+			alert('Cannot trigger event');
+		}
 	},
 
 	/**
@@ -196,17 +212,21 @@ var Forum = {
 	voteReplyUp: function(event)
 	{
 		var element = $(event.data.element);
-		$.ajax({
-			dataType: 'json',
-			url: Forum._uri + 'reply/vote-up/' + element.data('id')
-		}).done(function(response){
-			if (response.status == "error") {
-				$('#errorModal .modal-body').html(response.message);
-				$('#errorModal').modal('show');
-			} else {
-				window.location.reload(true);
-			}
-		});
+		if (element) {
+			$.ajax({
+				dataType: 'json',
+				url: Forum._uri + 'reply/vote-up/' + element.data('id')
+			}).done(function(response){
+				if (response.status == "error") {
+					$('#errorModal .modal-body').html(response.message);
+					$('#errorModal').modal('show');
+				} else {
+					window.location.reload(true);
+				}
+			});
+		} else {
+			alert('Cannot trigger event');
+		}
 	},
 
 	/**
@@ -215,17 +235,21 @@ var Forum = {
 	voteReplyDown: function(event)
 	{
 		var element = $(event.data.element);
-		$.ajax({
-			dataType: 'json',
-			url: Forum._uri + 'reply/vote-down/' + element.data('id')
-		}).done(function(response){
-			if (response.status == "error") {
-				$('#errorModal .modal-body').html(response.message);
-				$('#errorModal').modal('show');
-			} else {
-				window.location.reload(true);
-			}
-		});
+		if (element) {
+			$.ajax({
+				dataType: 'json',
+				url: Forum._uri + 'reply/vote-down/' + element.data('id')
+			}).done(function(response){
+				if (response.status == "error") {
+					$('#errorModal .modal-body').html(response.message);
+					$('#errorModal').modal('show');
+				} else {
+					window.location.reload(true);
+				}
+			});
+		} else {
+			alert('Cannot trigger event');
+		}
 	},
 
 	/**
@@ -234,17 +258,21 @@ var Forum = {
 	acceptAnswer: function(event)
 	{
 		var element = $(event.data.element);
-		$.ajax({
-			dataType: 'json',
-			url: Forum._uri + 'reply/accept/' + element.data('id')
-		}).done(function(response){
-			if (response.status == "error") {
-				$('#errorModal .modal-body').html(response.message);
-				$('#errorModal').modal('show');
-			} else {
-				window.location.reload(true);
-			}
-		});
+		if (element) {
+			$.ajax({
+				dataType: 'json',
+				url: Forum._uri + 'reply/accept/' + element.data('id')
+			}).done(function(response){
+				if (response.status == "error") {
+					$('#errorModal .modal-body').html(response.message);
+					$('#errorModal').modal('show');
+				} else {
+					window.location.reload(true);
+				}
+			});
+		} else {
+			alert('Cannot trigger event');
+		}
 	},
 
 	/**
